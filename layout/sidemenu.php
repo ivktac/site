@@ -1,12 +1,3 @@
-<?php
-
-$menu = [
-    'main' => 'Main',
-    'about' => 'About',
-    'registration' => 'Registration',
-];
-?>
-
 <nav id="nav">
     <div class="brand">
         <a href="index.php" class="link">
