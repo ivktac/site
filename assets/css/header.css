@@ -1,0 +1,59 @@
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 50px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+header p {
+    font-size: 24px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+header a:hover {
+    background-color: #ff5a5f;
+    color: #fff;
+}
+
+#nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.brand {
+    width: 50%;
+}
+
+#nav .brand a {
+    display: flex;
+    align-items: center;
+    align-content: space-between;
+    gap: 10px;
+}
+
+.brand img {
+    width: 24px;
+    height: 24px;
+}
+
+a.active {
+    background-color: #ff5a5f;
+    color: #fff;
+}
+
+.link {
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
