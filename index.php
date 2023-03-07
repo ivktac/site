@@ -16,7 +16,9 @@ if ($_ENV["DEBUG"] == "True") {
     ini_set('display_errors', 1);
 }
 
-// TODO use global PDO??? or just in the the registration.php file add `$conn = mysqli_connect(...);`
+if ($_ENV["DB_HOSTNAME"] == "" || $_ENV["DB_USERNAME"] == "" || $_ENV["DB_PASSWORD"] == "" || $_ENV["DB_NAME"] == "") {
+    die("Database connection failed: missing environment variables");
+}
 
 $conn = mysqli_connect($_ENV["DB_HOSTNAME"], $_ENV["DB_USERNAME"], $_ENV["DB_PASSWORD"], $_ENV["DB_NAME"]);
 
