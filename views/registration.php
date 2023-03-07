@@ -6,6 +6,7 @@ $builder = Builder::create();
 $builder->applyPostEffects = false;
 $builder->applyScatterEffect = false;
 $builder->applyNoise = false;
+$builder->bgColor = "#ffffff";
 $builder->build();
 
 $data = [
@@ -23,26 +24,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{7,}$/', $_POST["password"])) {
-        $errors["password"] = "Password must be at least 7 characters long and contain at least one uppercase letter, one lowercase letter and one number";
+        $errors[] = "Password must be at least 7 characters long and contain at least one uppercase letter, one lowercase letter and one number";
     }
 
     if ($_POST["password"] != $_POST["password-repeat"]) {
-        $errors["password-repeat"] = "Passwords do not match";
+        $errors[] = "Passwords do not match";
     }
 
     if (!preg_match('/^[a-zA-Z0-9._-]+@[a-zA-z0-9.-]+\.[a-zA-Z]{2,}$/', $_POST["email"])) {
-        $errors["email"] = "Invalid email";
+        $errors[] = "Invalid email";
     }
 
     if (!$builder->compare($_POST["captcha"], $_SESSION["captcha"])) {
-        $errors["captcha"] = "Invalid captcha";
+        $errors[] = "Invalid captcha";
     }
+
+    try {
+        // check if user or email already exists
+        $stmt = $conn->prepare("SELECT * FROM users WHERE login = ? OR email = ?");
+        $stmt->execute([$data['login'], $data['email']]);
+
+        if ($stmt->num_rows() > 0) {
+            $errors[] = "Login or email already exists";
+        }
+    } catch (mysqli_sql_exception $e) {
+    }
+
 
     if (empty($errors)) {
         unset($_SESSION["captcha"]);
 
-        $conn->prepare("INSERT INTO users (login, password, email) VALUES (?, ?, ?)")
-            ->execute([$data['login'], password_hash($data['password'], PASSWORD_DEFAULT), $data['email']]);
+        try {
+            $conn->prepare("INSERT INTO users (login, password, email) VALUES (?, ?, ?)")
+                ->execute([$data['login'], password_hash($data['password'], PASSWORD_DEFAULT), $data['email']]);
+        } catch (mysqli_sql_exception $e) {
+        }
 
         header("Location: index.php?action=registration_successful");
     }
