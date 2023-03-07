@@ -16,7 +16,7 @@ header p {
     margin-bottom: 30px;
 }
 
-header a:hover {
+header a[class^="brand"]:hover {
     background-color: #ff5a5f;
     color: #fff;
 }

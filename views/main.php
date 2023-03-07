@@ -4,7 +4,7 @@
         principle. Our philosophy is to provide users with a minimal base system that can be customized and expanded
         to fit their needs. Arch Linux is designed to be fast, efficient, and easy to use, making it a popular
         choice among developers, power users, and enthusiasts.</p>
-    <a href="#">Get Started</a>
+    <a href="index.php">Get Started</a>
 
     <section>
         <h2>Why Choose Arch Linux?</h2>
@@ -23,16 +23,16 @@
             us improve and develop the distribution. There are many ways to get involved, from submitting bug reports
             and patches to contributing to our documentation and community forums. We value the contributions of our
             users and are grateful for their support.</p>
-        <a href="#">Learn More</a>
+        <a href="index.php?action=about">Learn More</a>
     </section>
 
     <section>
         <h2>Latest News</h2>
         <ul>
-            <li><a href="#">Arch Linux 2023.03.01 Released</a></li>
-            <li><a href="#">New Package Manager Features</a></li>
-            <li><a href="#">Community Forum Updates</a></li>
+            <li><a href="//geo.mirror.pkgbuild.com/iso/2023.03.01/archlinux-2023.03.01-x86_64.iso">Arch Linux 2023.03.01 Released</a></li>
+            <li><a href="//lists.archlinux.org/archives/list/pacman-dev@lists.archlinux.org/">New Package Manager Features</a></li>
+            <li><a href="//archlinux.org/news/">Community Forum Updates</a></li>
         </ul>
-        <a href="#">See All News</a>
+        <a href="//archlinux.org/news/">See All News</a>
     </section>
 </section>

@@ -1,6 +1,6 @@
 <nav id="nav">
     <div class="brand">
-        <a href="index.php" class="link">
+        <a href="index.php" class="link brand">
             <img src="assets/img/arch.svg" />
             <span>Arch Linux</span>
         </a>
