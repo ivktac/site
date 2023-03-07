@@ -7,7 +7,7 @@ require_once 'vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
-if ($_ENV["DEBUG"]) {
+if ($_ENV["DEBUG"] == "True") {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
 }
