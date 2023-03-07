@@ -5,7 +5,7 @@
     <?php require_once 'layout/head.php'; ?>
 </head>
 
-<body class=<?php echo "page-" . $page; ?>>
+<body class=<?= "page-" . $page; ?>>
     <?php require_once 'layout/header.php'; ?>
 
     <main>
