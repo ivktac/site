@@ -1,3 +1,3 @@
 <header class="header">
-  <?php require_once 'layout/sidemenu.php'; ?>
+    <?php require_once 'layout/sidemenu.php'; ?>
 </header>
