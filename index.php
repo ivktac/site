@@ -12,11 +12,13 @@ if ($_ENV["DEBUG"]) {
     ini_set('display_errors', 1);
 }
 
+// TODO use global PDO??? or just in the the registration.php file add `$conn = mysqli_connect(...);`
 
 $menu = [
     'main' => 'Main',
     'about' => 'About',
-    // 'registration' => 'Registration',
+    // $_SESSION["user"] ? 'logout' : 'login' => $_SESSION["user"] ? 'Logout' : 'Login',
+    'registration' => 'Registration', // TODO check if user is logged in and if not, show this menu item, otherwise hide it
 ];
 
 $page = $_GET['action'] ?? 'main';
