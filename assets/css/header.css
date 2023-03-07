@@ -3,6 +3,9 @@ header {
     color: #fff;
     padding: 50px;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 header h1 {
@@ -31,7 +34,7 @@ header a[class^="brand"]:hover {
     width: 50%;
 }
 
-#nav .brand a {
+.brand a {
     display: flex;
     align-items: center;
     align-content: space-between;

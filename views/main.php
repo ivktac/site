@@ -29,8 +29,10 @@
     <section>
         <h2>Latest News</h2>
         <ul>
-            <li><a href="//geo.mirror.pkgbuild.com/iso/2023.03.01/archlinux-2023.03.01-x86_64.iso">Arch Linux 2023.03.01 Released</a></li>
-            <li><a href="//lists.archlinux.org/archives/list/pacman-dev@lists.archlinux.org/">New Package Manager Features</a></li>
+            <li><a href="//geo.mirror.pkgbuild.com/iso/2023.03.01/archlinux-2023.03.01-x86_64.iso">Arch Linux 2023.03.01
+                    Released</a></li>
+            <li><a href="//lists.archlinux.org/archives/list/pacman-dev@lists.archlinux.org/">New Package Manager
+                    Features</a></li>
             <li><a href="//archlinux.org/news/">Community Forum Updates</a></li>
         </ul>
         <a href="//archlinux.org/news/">See All News</a>

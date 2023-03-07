@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors[] = "Login or email already exists";
         }
     } catch (mysqli_sql_exception $e) {
+        // FIX: NOT IMPLEMENTED UNTIL lab4 is done
     }
 
 
@@ -58,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $conn->prepare("INSERT INTO users (login, password, email) VALUES (?, ?, ?)")
                 ->execute([$data['login'], password_hash($data['password'], PASSWORD_DEFAULT), $data['email']]);
         } catch (mysqli_sql_exception $e) {
+            // FIX: NOT IMPLEMENTED UNTIL lab4 is done
         }
 
         header("Location: index.php?action=registration_successful");
