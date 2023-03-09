@@ -43,7 +43,7 @@ function validateRegistrationData(RegistrationData $data): array
     }
 
     if ($data->password !== $data->repeatedPassword) {
-        $errors[] = "Password repeat is required";
+        $errors[] = "Password not match";
     }
 
     if (!preg_match('/^[a-zA-Z0-9._-]+@[a-zA-z0-9.-]+\.[a-zA-Z]{2,}$/', $data->email)) {
@@ -72,4 +72,27 @@ function registerUser(RegistrationData $data): void
     executeSqlQuery($query, ["sss", $data->login, password_hash($data->password, PASSWORD_BCRYPT), $data->email]);
 
     header("Location: index.php?action=registration_successful");
+}
+
+function signIn(LoginData $data): void
+{
+    global $conn, $errors;
+
+    $query = "SELECT * FROM users WHERE login = ?";
+
+    $statement = executeSqlQuery($query, "s", [$data->login]);
+
+    $result = mysqli_stmt_get_result($statement);
+
+    $user = mysqli_fetch_assoc($result);
+
+    if ($user && password_verify($data->password, $user["password"])) {
+        $_SESSION["user"] = $data->login;
+
+        header("Location: index.php");
+    
+        return;
+    }
+
+    $errors[] = "Invalid login or password";
 }

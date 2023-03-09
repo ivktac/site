@@ -18,6 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // registerUser($data);
 
+        $_SESSION["user"] = $data->login;
+
         header("Location: index.php?action=registration_successful");
     }
 }
@@ -49,11 +51,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <input type="submit" value="Register">
 
-        <ul class="error-list">
-            <?php foreach ($errors as $name => $error): ?>
-                <li>
-                    <?= $error ?>
-                </li>
-            <?php endforeach; ?>
-        </ul>
+        <?php include_once 'layout/error_list.php' ?>
 </section>
