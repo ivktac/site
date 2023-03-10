@@ -1,5 +1,7 @@
 <?php
 
+global $conn;
+
 $errors = [];
 
 $data = new LoginData(
@@ -9,7 +11,7 @@ $data = new LoginData(
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
-        $user = signIn($conn, $data);
+        $user = $data->signIn($conn);
 
         $_SESSION["user"] = serialize($user);
 
@@ -24,15 +26,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <section class="page-login">
     <h1>Login form</h1>
 
-    <form method="post">
-        <label for="login">Login:</label>
-        <input type="text" name="login" id="login" required><br>
+    <div class="grid-2">
 
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required><br>
+        <form method="post">
+            <label for="login">Login:</label>
+            <input type="text" name="login" id="login" required><br>
 
-        <input type="submit" value="Login">
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required><br>
+
+            <input type="submit" value="Login">
+
+        </form>
 
         <?php include_once 'layout/error_list.php' ?>
-    </form>
+    </div>
 </section>

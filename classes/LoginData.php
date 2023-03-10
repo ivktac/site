@@ -10,4 +10,16 @@ class LoginData
         $this->login = $login;
         $this->password = $password;
     }
+
+    public function signIn(mysqli $conn): UserResponse
+    {
+        $user = $conn->query("SELECT * FROM users WHERE login = '{$this->login}'")
+            ->fetch_assoc();
+
+        if (!$user && !password_verify($this->password, $user['password'])) {
+            throw new Exception("Invalid login or password");
+        }
+
+        return UserResponse::fromUser($user);
+    }
 }

@@ -62,6 +62,16 @@ class RegistrationData
         return new UserRequest($this->login, $password, $this->email);
     }
 
+    public function registerUser(mysqli $conn): UserResponse
+    {
+        $statement = $conn->prepare("INSERT INTO users (login, password, email) VALUES (?, ?, ?)");
+        $statement->execute([$this->login, password_hash($this->password, PASSWORD_BCRYPT), $this->email]);
+
+        $user = $conn->query("SELECT * FROM users WHERE login = '{$this->login}'")->fetch_assoc();
+
+        return UserResponse::fromUser($user);
+    }
+
     public function validate(): array
     {
         $errors = [];
