@@ -1,6 +1,5 @@
 <?php
 
-
 class RegistrationData
 {
     public string $login;
@@ -21,11 +20,11 @@ class RegistrationData
     public static function fromRequest(array $request): RegistrationData
     {
         return new RegistrationData(
-            $request['login'],
-            $request['password'],
-            $request['repeatPassword'],
-            $request['email'],
-            $request['captcha']
+            $request['login'] ?? '',
+            $request['password'] ?? '',
+            $request['password-repeat'] ?? '',
+            $request['email'] ?? '',
+            $request['captcha'] ?? ''
         );
     }
 
@@ -46,7 +45,7 @@ class RegistrationData
 
     public static function comparePasswords(string $password, string $repeatedPassword): bool
     {
-        return $password !== $repeatedPassword;
+        return $password == $repeatedPassword;
     }
 
     public static function testCaptcha(string $captcha): bool
@@ -61,5 +60,32 @@ class RegistrationData
     {
         $password = password_hash($this->password, PASSWORD_BCRYPT);
         return new UserRequest($this->login, $password, $this->email);
+    }
+
+    public function validate(): array
+    {
+        $errors = [];
+
+        if (!$this::hasValidLogin($this->login)) {
+            $errors[] = "Login should has at least 4 symbols and only letters, numbers, underscore or dash";
+        }
+
+        if (!$this::hasValidPassword($this->password)) {
+            $errors[] = "Password should has at least 7 symbols, at least one uppercase letter, one lowercase letter and one number";
+        }
+
+        if (!$this::comparePasswords($this->password, $this->repeatedPassword)) {
+            $errors[] = "Passwords do not match";
+        }
+
+        if (!$this::hasValidEmail($this->email)) {
+            $errors[] = "Invalid email";
+        }
+
+        if (!$this::testCaptcha($this->captcha)) {
+            $errors[] = "Invalid captcha";
+        }
+
+        return $errors;
     }
 }

@@ -1,24 +1,28 @@
 <?php
 
+
 $errors = [];
 
-$data = new RegistrationData(
-    $_POST["login"] ?? "",
-    $_POST["password"] ?? "",
-    $_POST["password-repeat"] ?? "",
-    $_POST["email"] ?? "",
-    $_POST["captcha"] ?? ""
-);
+$data = RegistrationData::fromRequest($_POST);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $errors = validateRegistrationData($data);
+    $errors = $data->validate();
+
+    // check if user already exists
+    $user = $conn->query("SELECT * FROM users WHERE login = '{$data->login}' OR email = '{$data->email}'")->fetch_assoc();
+
+    if ($user) {
+        $errors[] = "User with this login or email already exists";
+    }
 
     if (empty($errors)) {
         unset($_SESSION["captcha"]);
 
-        // registerUser($data);
+        global $conn;
 
-        $_SESSION["user"] = $data->login;
+        $user = registerUser($conn, $data);
+
+        $_SESSION["user"] = serialize($user);
 
         header("Location: index.php?action=registration_successful");
     }

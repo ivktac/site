@@ -8,7 +8,15 @@ $data = new LoginData(
 );
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    signIn($data);
+    try {
+        $user = signIn($conn, $data);
+
+        $_SESSION["user"] = serialize($user);
+
+        header("Location: index.php");
+    } catch (Exception $e) {
+        $errors[] = $e->getMessage();
+    }
 }
 
 ?>

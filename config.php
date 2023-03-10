@@ -55,6 +55,8 @@ $menu = [
 
 if (!isset($_SESSION["user"])) {
     $menu["registration"] = 'Registration';
+} else {
+    $menu["profile"] = 'Profile';
 }
 
 $signinItem = isset($_SESSION["user"]) ? 'logout' : 'login';
