@@ -30,29 +30,27 @@ function isUserExists(string $login, string $email): bool
 
 function validateRegistrationData(RegistrationData $data): array
 {
-    global $conn;
+    // global $conn;
 
     $errors = [];
 
-    if (!preg_match('/^[a-zA-Zа-яА-Я0-9_-]{4,}$/u', $data->login)) {
-        $errors[] = "Login is required";
+    if (!$data::hasValidLogin($data->login)) {
+        $errors[] = "Login should has at least 4 symbols and only letters, numbers, underscore or dash";
     }
 
-    if (!preg_match('/^[a-zA-Zа-яА-Я0-9_-]{4,}$/u', $data->password)) {
-        $errors[] = "Password is required";
+    if (!$data::hasValidPassword($data->password)) {
+        $errors[] = "Password should has at least 7 symbols, at least one uppercase letter, one lowercase letter and one number";
     }
 
-    if ($data->password !== $data->repeatedPassword) {
-        $errors[] = "Password not match";
+    if ($data::comparePasswords($data->password, $data->repeatedPassword)) {
+        $errors[] = "Passwords do not match";
     }
 
-    if (!preg_match('/^[a-zA-Z0-9._-]+@[a-zA-z0-9.-]+\.[a-zA-Z]{2,}$/', $data->email)) {
+    if (!$data::hasValidEmail($data->email)) {
         $errors[] = "Invalid email";
     }
 
-    global $builder;
-
-    if (!$builder->compare($data->captcha, $_SESSION["captcha"])) {
+    if (!$data::testCaptcha($data->captcha)) {
         $errors[] = "Invalid captcha";
     }
 
@@ -65,18 +63,16 @@ function validateRegistrationData(RegistrationData $data): array
 
 function registerUser(RegistrationData $data): void
 {
-    global $conn;
-
     $query = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
 
-    executeSqlQuery($query, ["sss", $data->login, password_hash($data->password, PASSWORD_BCRYPT), $data->email]);
+    executeSqlQuery($query, "sss", [$data->login, password_hash($data->password, PASSWORD_BCRYPT), $data->email]);
 
     header("Location: index.php?action=registration_successful");
 }
 
 function signIn(LoginData $data): void
 {
-    global $conn, $errors;
+    global $errors;
 
     $query = "SELECT * FROM users WHERE login = ?";
 
@@ -87,10 +83,10 @@ function signIn(LoginData $data): void
     $user = mysqli_fetch_assoc($result);
 
     if ($user && password_verify($data->password, $user["password"])) {
-        $_SESSION["user"] = $data->login;
+        $_SESSION["user"] = UserResponse::fromUser($user);
 
         header("Location: index.php");
-    
+
         return;
     }
 
