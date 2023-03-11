@@ -1,3 +1,5 @@
+<?php global $menu, $page; ?>
+
 <nav id="nav">
     <div class="menu">
         <ul>

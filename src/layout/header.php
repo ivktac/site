@@ -6,5 +6,5 @@
         </a>
     </div>
     
-    <?php require_once 'layout/sidemenu.php'; ?>
+    <?php require_once 'src/layout/sidemenu.php'; ?>
 </header>

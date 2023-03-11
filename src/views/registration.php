@@ -1,6 +1,6 @@
 <?php
 
-global $conn;
+global $conn, $builder;
 
 $errors = [];
 
@@ -55,6 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="submit" value="Register">
         </form>
 
-        <?php include_once 'layout/error_list.php' ?>
+        <?php require_once 'src/layout/error_list.php' ?>
     </div>
 </section>

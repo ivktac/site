@@ -2,5 +2,8 @@
   "require": {
     "vlucas/phpdotenv": "^5.5",
     "s1syphos/php-simple-captcha": "^2.3"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^1.10"
   }
 }

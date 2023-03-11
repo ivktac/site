@@ -39,6 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         </form>
 
-        <?php include_once 'layout/error_list.php' ?>
+        <?php require_once 'src/layout/error_list.php' ?>
     </div>
 </section>

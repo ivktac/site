@@ -9,11 +9,14 @@
 
 declare(strict_types=1);
 
-require_once 'config.php';
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+require_once 'src/config.php';
 
 $page = $_GET['action'] ?? 'main';
-if (!file_exists("views/$page.php")) {
+if (!file_exists("src/views/$page.php")) {
     $page = '404';
 }
 
-require_once 'layout/template.php';
+require_once 'src/layout/template.php';
