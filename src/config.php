@@ -35,7 +35,7 @@ $username = $_ENV["DB_USERNAME"] ?? "test";
 $password = $_ENV["DB_PASSWORD"] ?? "";
 $database = $_ENV["DB_NAME"] ?? "testdb";
 
-$conn = mysqli_connect($hostname, $username, $password, $database);
+$conn = new mysqli($hostname, $username, $password, $database);
 
 $builder = Builder::create();
 $builder->applyPostEffects = false;
