@@ -9,19 +9,41 @@ $errors = [];
 $data = RegistrationData::fromRequest($_POST);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $errors = $data->validate();
-
     // check if user already exists
-    $user = $conn->query("SELECT * FROM users WHERE login = '{$data->login}' OR email = '{$data->email}'")->fetch_assoc();
+    $result = mysqli_query($conn, "SELECT * FROM users WHERE login = '{$data->login}' OR email = '{$data->email}'");
+
+    $user = mysqli_fetch_assoc($result);
 
     if ($user) {
         $errors[] = "User with this login or email already exists";
     }
 
+    if (!validate_login($data->login)) {
+        $errors[] = "Login should has at least 4 symbols and only letters, numbers, underscore or dash";
+    }
+
+    if (!validate_password($data->password)) {
+        $errors[] = "Password should has at least 7 symbols, at least one uppercase letter, one lowercase letter and one number";
+    }
+
+    if ($data->password != $data->repeatedPassword)
+    {
+        $errors[] = "Passwords do not match";
+    }
+
+    if (!validate_email($data->email)) {
+        $erors[] = "Invalid email";
+    }
+
+    if (!$builder->compare($data->captcha, $_SESSION["captcha"]))
+    {
+        $errors[] = "Invalid captcha";
+    }
+
     if (empty($errors)) {
         unset($_SESSION["captcha"]);
 
-        $user = $data->registerUser($conn);
+        $user = register_user($conn, $data);
 
         $_SESSION["user"] = serialize($user);
 

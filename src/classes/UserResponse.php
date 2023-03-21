@@ -20,13 +20,13 @@ class UserResponse
         return spl_object_hash($this);
     }
     
-    public static function fromUser(array $user): UserResponse
+    public static function fromDb(array $data): UserResponse
     {
         return new UserResponse(
-            $user['id'],
-            $user['login'],
-            $user['email'],
-            $user['admin']
+            $data['id'],
+            $data['login'],
+            $data['email'],
+            $data['admin']
         );
     }
 }
