@@ -63,7 +63,10 @@ $signinItem = isset($_SESSION["user"]) ? 'logout' : 'login';
 $menu[$signinItem] = ucfirst($signinItem);
 
 function check_allow_rights() {
-    if (!isset($_SESSION["user"])) {
-        header("Location: index.php");
+    if (isset($_SESSION["user"])) {
+        $user = unserialize($_SESSION["user"]);
+        if ($user->is_admin == true) {
+            header("Location: index.php");
+        }
     }
 }

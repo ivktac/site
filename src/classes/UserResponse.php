@@ -5,14 +5,14 @@ class UserResponse
     public int $id;
     public string $login;
     public string $email;
-    public bool $role;
+    public bool $is_admin;
 
-    public function __construct(int $id, string $login, string $email, bool $role)
+    public function __construct(int $id, string $login, string $email, bool $is_admin)
     {
         $this->id = $id;
         $this->login = $login;
         $this->email = $email;
-        $this->role = $role;
+        $this->is_admin = $is_admin;
     }
 
     public function __toString()

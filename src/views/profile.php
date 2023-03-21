@@ -12,7 +12,7 @@
                         <?= $user->email ?>
                     </b></p>
                 <p>Role: <b>
-                        <?= $user->role ? 'Admin' : 'User' ?>
+                        <?= $user->is_admin ? 'Admin' : 'User' ?>
                     </b></p>
             <?php endif; ?>
         <?php endif; ?>
