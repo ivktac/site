@@ -61,3 +61,9 @@ if (!isset($_SESSION["user"])) {
 
 $signinItem = isset($_SESSION["user"]) ? 'logout' : 'login';
 $menu[$signinItem] = ucfirst($signinItem);
+
+function check_allow_rights() {
+    if ($_SESSION["user"]) {
+        header("Location: index.php");
+    }
+}

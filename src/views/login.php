@@ -1,5 +1,7 @@
 <?php
 
+check_allow_rights();
+
 global $conn;
 
 $errors = [];
