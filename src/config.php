@@ -65,7 +65,7 @@ $menu[$signinItem] = ucfirst($signinItem);
 function check_allow_rights() {
     if (isset($_SESSION["user"])) {
         $user = unserialize($_SESSION["user"]);
-        if ($user->is_admin == false) {
+        if (!$user->is_admin) {
             header("Location: index.php");
         }
     }
