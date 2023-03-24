@@ -1,6 +1,6 @@
 <?php
 
-check_allow_rights();
+checkAllowedRights();
 
 global $conn;
 
@@ -9,7 +9,7 @@ $errors = [];
 $data = LoginData::fromRequest($_POST);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user = sign_in_user($conn, $data);
+    $user = signInUser($conn, $data);
 
     if ($user) {
         $_SESSION["user"] = serialize($user);

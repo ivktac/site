@@ -1,6 +1,6 @@
 <?php
 
-check_allow_rights();
+checkAllowedRights();
 
 global $conn, $builder;
 
@@ -18,11 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors[] = "User with this login or email already exists";
     }
 
-    if (!validate_login($data->login)) {
+    if (!isValidLogin($data->login)) {
         $errors[] = "Login should has at least 4 symbols and only letters, numbers, underscore or dash";
     }
 
-    if (!validate_password($data->password)) {
+    if (!isValidPassword($data->password)) {
         $errors[] = "Password should has at least 7 symbols, at least one uppercase letter, one lowercase letter and one number";
     }
 
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors[] = "Passwords do not match";
     }
 
-    if (!validate_email($data->email)) {
+    if (!isValidEmail($data->email)) {
         $erors[] = "Invalid email";
     }
 
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($errors)) {
         unset($_SESSION["captcha"]);
 
-        $user = register_user($conn, $data);
+        $user = registerUser($conn, $data);
 
         $_SESSION["user"] = serialize($user);
 
