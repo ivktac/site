@@ -61,5 +61,3 @@ if (!isset($_SESSION["user"])) {
 
 $signinItem = isset($_SESSION["user"]) ? 'logout' : 'login';
 $menu[$signinItem] = ucfirst($signinItem);
-
-require_once 'src/functions.php';

@@ -10,6 +10,7 @@
 declare(strict_types=1);
 
 require_once 'src/config.php';
+require_once 'src/functions.php';
 
 $page = $_GET['action'] ?? 'main';
 if (!file_exists("src/views/$page.php")) {
