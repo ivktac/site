@@ -6,14 +6,21 @@ global $conn;
 
 $errors = [];
 
-$data = LoginData::fromRequest($_POST);
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user = signInUser($conn, $data);
+    $login = $_POST["login"];
+    $password = $_POST["password"];
 
+    $sql = "SELECT * FROM users WHERE login = '$login'";
+
+    $result = mysqli_query($conn, $sql);
+    if (!$result) {
+        die(mysqli_error($conn));
+    }
+
+    $user = mysqli_fetch_assoc($result);
     if ($user) {
-        $_SESSION["user"] = serialize($user);
-        header("Location: index.php");
+        $_SESSION["user"] = serialize(new User($user["id"], $user["login"], $user["email"], $user["admin"]));
+        header("Location: index.php?action=profile");
         exit();
     }
 
@@ -38,6 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         </form>
 
-        <?php require_once 'src/layout/error_list.php' ?>
+        <?php require_once 'layout/error_list.php' ?>
     </div>
 </section>

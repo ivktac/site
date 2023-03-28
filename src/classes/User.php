@@ -1,6 +1,6 @@
 <?php
 
-class UserResponse
+class User
 {
     public int $id;
     public string $login;
@@ -18,15 +18,5 @@ class UserResponse
     public function __toString()
     {
         return spl_object_hash($this);
-    }
-    
-    public static function fromDb(array $data): UserResponse
-    {
-        return new UserResponse(
-            $data['id'],
-            $data['login'],
-            $data['email'],
-            $data['admin']
-        );
     }
 }

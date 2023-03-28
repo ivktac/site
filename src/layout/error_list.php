@@ -2,8 +2,6 @@
 
 <ul class="error-list">
     <?php foreach ($errors as $error): ?>
-        <li>
-            <?= $error ?>
-        </li>
+        <li><?= $error ?></li>
     <?php endforeach ?>
 </ul>
