@@ -1,24 +1,23 @@
 <?php
 
+checkAllowedRights();
+
 global $conn;
 
 $errors = [];
 
-$data = new LoginData(
-    $_POST["login"] ?? "",
-    $_POST["password"] ?? ""
-);
+$data = LoginData::fromRequest($_POST);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    try {
-        $user = $data->signIn($conn);
+    $user = signInUser($conn, $data);
 
+    if ($user) {
         $_SESSION["user"] = serialize($user);
-
         header("Location: index.php");
-    } catch (Exception $e) {
-        $errors[] = $e->getMessage();
+        exit();
     }
+
+    $errors[] = "Invalid login or password";
 }
 
 ?>

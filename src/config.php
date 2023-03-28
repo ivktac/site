@@ -44,7 +44,7 @@ $builder->applyNoise = false;
 $builder->bgColor = "#ffffff";
 $builder->build();
 
-if (!$conn) {
+if (mysqli_errno($conn) != 0) {
     die("Connection failed: " . mysqli_connect_error());
 }
 

@@ -1,4 +1,4 @@
-<?php global $errors ?>
+<?php global $errors; ?>
 
 <ul class="error-list">
     <?php foreach ($errors as $error): ?>

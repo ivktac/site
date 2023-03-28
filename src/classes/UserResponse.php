@@ -5,14 +5,14 @@ class UserResponse
     public int $id;
     public string $login;
     public string $email;
-    public bool $role;
+    public bool $is_admin;
 
-    public function __construct(int $id, string $login, string $email, bool $role)
+    public function __construct(int $id, string $login, string $email, bool $is_admin)
     {
         $this->id = $id;
         $this->login = $login;
         $this->email = $email;
-        $this->role = $role;
+        $this->is_admin = $is_admin;
     }
 
     public function __toString()
@@ -20,13 +20,13 @@ class UserResponse
         return spl_object_hash($this);
     }
     
-    public static function fromUser(array $user): UserResponse
+    public static function fromDb(array $data): UserResponse
     {
         return new UserResponse(
-            $user['id'],
-            $user['login'],
-            $user['email'],
-            $user['admin']
+            $data['id'],
+            $data['login'],
+            $data['email'],
+            $data['admin']
         );
     }
 }

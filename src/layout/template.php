@@ -4,17 +4,17 @@
 <html lang="en-US">
 
 <head>
-    <?php require_once 'src/layout/head.php'; ?>
+    <?php require_once 'layout/head.php'; ?>
 </head>
 
 <body class=<?= "page-" . $page; ?>>
-    <?php require_once 'src/layout/header.php'; ?>
+    <?php require_once 'layout/header.php'; ?>
 
     <main>
-        <?php require_once "src/views/" . $page . ".php"; ?>
+        <?php require_once "views/" . $page . ".php"; ?>
     </main>
 
-    <?php require_once 'src/layout/footer.php'; ?>
+    <?php require_once 'layout/footer.php'; ?>
 </body>
 
 </html>
