@@ -51,6 +51,7 @@ if (mysqli_errno($conn) != 0) {
 $menu = [
     'main' => 'Main',
     'about' => 'About',
+    'news' => 'News',
 ];
 
 if (!isset($_SESSION["user"])) {

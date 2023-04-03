@@ -1,14 +1,16 @@
 <?php
 
-checkAllowedRights();
+if (isSignedIn()) {
+    header("Location: index.php");
+}
 
 global $conn;
 
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $login = $_POST["login"];
-    $password = $_POST["password"];
+    $login = mysqli_escape_string($conn, $_POST["login"]);
+    $password =  mysqli_escape_string($conn, $_POST["password"]);
 
     $sql = "SELECT * FROM users WHERE login = '$login'";
 
@@ -20,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user = mysqli_fetch_assoc($result);
     if ($user) {
         $_SESSION["user"] = serialize(new User($user["id"], $user["login"], $user["email"], $user["admin"]));
-        header("Location: index.php?action=profile");
+        header("Location: index.php");
         exit();
     }
 

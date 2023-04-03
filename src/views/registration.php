@@ -1,6 +1,8 @@
 <?php
 
-checkAllowedRights();
+if (isSignedIn()) {
+    header("Location: index.php");
+}
 
 global $conn, $builder;
 
