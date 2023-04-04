@@ -10,10 +10,10 @@ $article = getNewsById($article_id);
 ?>
 
 <main class="page-news">
-    <?php if (!$article) : ?>
-        <h1>Article not found</h1>
-    <?php else : ?>
-        <div class="article">
+    <div class="article">
+        <?php if (!$article) : ?>
+            <h1>Article not found</h1>
+        <?php else : ?>
             <h2><?= $article["title"] ?></h2>
             <div class="article-info">
                 <p class="date"><span>Created:</span> <?= date("d/m/Y H:i", strtotime($article["created_at"])) ?></p>
@@ -32,8 +32,8 @@ $article = getNewsById($article_id);
                         <a class="article-action" href="index.php?action=delete_news&id=<?= $article["id"] ?>">Delete</a>
                     <?php endif ?>
                 <?php endif; ?>
-                <a class="article-action" href="index.php?action=news">Back</a>
             </div>
-        </div>
-    <?php endif ?>
+        <?php endif ?>
+        <a class="button-back" href="index.php?action=news">Back</a>
+    </div>
 </main>
