@@ -10,8 +10,6 @@
 use Dotenv\Dotenv;
 use SimpleCaptcha\Builder;
 
-session_start();
-
 require_once 'vendor/autoload.php';
 
 // load all clases from classes folder

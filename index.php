@@ -17,6 +17,8 @@ declare(strict_types=1);
 $path = __DIR__ . '/src';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
+session_start();
+
 require_once 'config.php';
 require_once 'functions.php';
 
