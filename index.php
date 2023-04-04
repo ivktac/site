@@ -5,6 +5,9 @@
  * 
  * Main file of the project. Contains the main logic of the project.
  * 
+ * TODO: Add likes/unlikes to the news
+ * TODO: Add comments to the news
+ * TODO: Add user profile page
  */
 
 declare(strict_types=1);
