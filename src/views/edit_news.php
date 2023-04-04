@@ -1,6 +1,5 @@
 <?php
 
-use Models\News;
 
 $article_id = intval($_GET["id"]);
 $article = getNewsById($article_id);

@@ -41,7 +41,7 @@ $news = mysqli_fetch_all($result, MYSQLI_ASSOC);
 				<h2><?= $article["title"] ?></h2>
 				<div class="article-info">
 					<p class="date"><span>Created:</span> <?= date("d/m/Y H:i", strtotime($article["created_at"])) ?></p>
-					<p class="author"><span>Author</span> <?= $article["login"] == $user->login ? "You" : $article["login"] ?></p>
+					<p class="author"><span>Author</span> <?= $article["login"] ?></p>
 					<p class="date"><span> Updated:</span> <?= date("d/m/Y H:i", strtotime($article["updated_at"])) ?></p>
 				</div>
 				<div class="content">

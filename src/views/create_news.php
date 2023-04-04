@@ -1,7 +1,5 @@
 <?php
 
-use Models\News;
-
 if (!isSignedIn()) {
     header("Location: index.php?action=login");
 }
