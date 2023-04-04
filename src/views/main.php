@@ -33,8 +33,7 @@
                     Released</a></li>
             <li><a href="//lists.archlinux.org/archives/list/pacman-dev@lists.archlinux.org/">New Package Manager
                     Features</a></li>
-            <li><a href="//archlinux.org/news/">Community Forum Updates</a></li>
         </ul>
-        <a href="//archlinux.org/news/">See All News</a>
+        <a href="index.php?action=news">See All News</a>
     </section>
 </section>
