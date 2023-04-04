@@ -1,5 +1,7 @@
 <?php
 
+use Models\User;
+
 if (isSignedIn()) {
     header("Location: index.php");
 }

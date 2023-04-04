@@ -1,5 +1,7 @@
 <?php
 
+use Models\News;
+
 $article_id = intval($_GET["id"]);
 $article = getNewsById($article_id);
 
@@ -15,10 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $content = mysqli_real_escape_string($conn, $_POST["content"]);
     $visibility = intval($_POST["visibility"]);    
 
-    $news = new News();
-    $news->title = $title;
-    $news->content = $content;
-    $news->visibility = $visibility;
+    $news = new News($title, $content, $visibility, $user->id);
     $news->id = $_GET["id"];
     $news->update();
 

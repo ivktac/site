@@ -1,5 +1,7 @@
 <?php
 
+use Models\News;
+
 if (!isSignedIn()) {
     header("Location: index.php?action=login");
 }
@@ -11,12 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $content = mysqli_escape_string($conn, $_POST["content"]);
     $visibility = mysqli_escape_string($conn, $_POST["visibility"]);
 
-    $news = new News();
-    $news->title = $title;
-    $news->content = $content;
-    $news->visibility = $visibility;
-    $news->author_id = $user->id;
+    $news = new News($title, $content, $visibility, $user->id);
     $news->save();
+
     header("Location: index.php?action=news");
 }
 
