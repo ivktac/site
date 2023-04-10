@@ -1,5 +1,7 @@
 <?php
 
+global $conn;
+
 if (!isSignedIn()) {
     header("Location: index.php?action=login");
 }
@@ -12,7 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $visibility = mysqli_escape_string($conn, $_POST["visibility"]);
 
     $news = new News($title, $content, $visibility, $user->id);
-    $news->save();
+    
+    saveNews($conn, $news);
 
     header("Location: index.php?action=news");
 }

@@ -1,5 +1,7 @@
 <?php
 
+global $conn;
+
 if (!isSignedIn()) {
     header("Location: index.php?action=login");
 }
@@ -19,9 +21,8 @@ if ($_SESSION["user"]) {
     $user = unserialize($_SESSION["user"]);
     if ($user->is_admin || $user->id == $article["author_id"]) {
         if (isset($_GET["action"]) && $_GET["action"] == "delete_news") {
-            $news = new News("", "", "", "");
-            $news->id = $article_id;
-            $news->delete();
+            deleteNews($conn, $article_id);
+
             header("Location: index.php?action=news");
         }
     }
