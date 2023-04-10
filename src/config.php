@@ -45,18 +45,3 @@ $builder->build();
 if (mysqli_errno($conn) != 0) {
     die("Connection failed: " . mysqli_connect_error());
 }
-
-$menu = [
-    'main' => 'Main',
-    'about' => 'About',
-    'news' => 'News',
-];
-
-if (!isset($_SESSION["user"])) {
-    $menu["registration"] = 'Registration';
-} else {
-    $menu["profile"] = 'Profile';
-}
-
-$signinItem = isset($_SESSION["user"]) ? 'logout' : 'login';
-$menu[$signinItem] = ucfirst($signinItem);
