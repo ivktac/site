@@ -14,6 +14,9 @@ $menu = [
 if (!isset($_SESSION["user"])) {
     unset($menu['profile']);
     unset($menu['logout']);
+} else {
+    unset($menu['registration']);
+    unset($menu['login']);
 }
 ?>
 
