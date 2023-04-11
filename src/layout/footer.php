@@ -11,3 +11,7 @@
     </nav>
     <p>&copy; 2023 Arch Linux. All rights reserved.</p>
 </footer>
+
+</body>
+
+</html>
