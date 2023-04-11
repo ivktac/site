@@ -12,6 +12,67 @@ function isSignedIn()
     return false;
 }
 
+function updateUser($user)
+{
+    global $conn;
+
+    $query = "UPDATE users SET first_name = ?, last_name = ?, birthdate = ?, password = ? WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "ssssi",
+        $user->first_name,
+        $user->last_name,
+        $user->birthdate,
+        $user->password,
+        $user->id
+    );
+
+    $result = mysqli_stmt_execute($stmt);
+
+    if (!$result) {
+        die(mysqli_error($conn));
+    }
+
+    $user = getUserById($user->id);
+
+    unset($_SESSION["user"]);
+
+    $_SESSION["user"] = serialize($user);
+}
+
+function getUserById($id)
+{
+    global $conn;
+
+    $query = "SELECT * FROM users WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+
+    mysqli_stmt_bind_param($stmt, "i", $id);
+
+    $result = mysqli_stmt_execute($stmt);
+
+    if (!$result) {
+        die(mysqli_error($conn));
+    }
+
+    $result = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_assoc($result)) {
+        return new User(
+            $row["id"],
+            $row["login"],
+            $row["email"],
+            $row["admin"],
+            $row["first_name"],
+            $row["last_name"],
+            $row["birthdate"],
+            $row["password"]
+        );
+    }
+}
+
 function getNewsById($id)
 {
     if (!isset($_GET["id"])) {

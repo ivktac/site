@@ -19,7 +19,7 @@ if (!$article) {
 
 if ($_SESSION["user"]) {
     $user = unserialize($_SESSION["user"]);
-    if ($user->is_admin || $user->id == $article["author_id"]) {
+    if ($user->admin || $user->id == $article["author_id"]) {
         if (isset($_GET["action"]) && $_GET["action"] == "delete_news") {
             deleteNews($conn, $article_id);
 

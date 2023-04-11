@@ -20,9 +20,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die(mysqli_error($conn));
     }
 
-    $user = mysqli_fetch_assoc($result);
-    if ($user) {
-        $_SESSION["user"] = serialize(new User($user["id"], $user["login"], $user["email"], $user["admin"]));
+    $result = mysqli_fetch_assoc($result);
+
+    if (password_verify($password, $result["password"])) {
+        $_SESSION["user"] = serialize(new User(
+            $result["id"],
+            $result["login"],
+            $result["email"],
+            $result["admin"],
+            $result["first_name"],
+            $result["last_name"],
+            $result["birthdate"],
+        ));
         header("Location: index.php");
         exit();
     }

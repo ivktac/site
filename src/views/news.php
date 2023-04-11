@@ -10,7 +10,7 @@ WHERE visibility = 1
 
 if (isset($_SESSION["user"])) {
 	$user = unserialize($_SESSION["user"]);
-	if ($user->is_admin) {
+	if ($user->admin) {
 		$sql = str_replace("WHERE visibility = 1", "", $sql);
 	} else {
 		$sql .= " OR author_id = " . $user->id;

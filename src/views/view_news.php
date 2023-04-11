@@ -27,7 +27,7 @@ $article = getNewsById($article_id);
             <div class="article-actions">
                 <?php if (isset($_SESSION["user"])) : ?>
                     <?php $user = unserialize($_SESSION["user"]); ?>
-                    <?php if ($user->is_admin || $user->id == $article["author_id"]) : ?>
+                    <?php if ($user->admin || $user->id == $article["author_id"]) : ?>
                         <a class="article-action" href="index.php?action=edit_news&id=<?= $article["id"] ?>">Edit</a>
                         <a class="article-action" href="index.php?action=delete_news&id=<?= $article["id"] ?>">Delete</a>
                     <?php endif ?>
