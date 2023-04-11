@@ -9,7 +9,7 @@
 
 // TODO: Add likes/unlikes to the news
 // TODO: Add comments to the news
-// TODO: Add user profile page
+// DONE: Add user profile page
 // TODO: Upload site to the server
 
 declare(strict_types=1);
