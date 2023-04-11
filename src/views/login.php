@@ -1,18 +1,37 @@
 <?php
 
-checkAllowedRights();
+
+if (isSignedIn()) {
+    header("Location: index.php");
+}
 
 global $conn;
 
 $errors = [];
 
-$data = LoginData::fromRequest($_POST);
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user = signInUser($conn, $data);
+    $login = mysqli_escape_string($conn, $_POST["login"]);
+    $password =  mysqli_escape_string($conn, $_POST["password"]);
 
-    if ($user) {
-        $_SESSION["user"] = serialize($user);
+    $sql = "SELECT * FROM users WHERE login = '$login'";
+
+    $result = mysqli_query($conn, $sql);
+    if (!$result) {
+        die(mysqli_error($conn));
+    }
+
+    $result = mysqli_fetch_assoc($result);
+
+    if (password_verify($password, $result["password"])) {
+        $_SESSION["user"] = serialize(new User(
+            $result["id"],
+            $result["login"],
+            $result["email"],
+            $result["admin"],
+            $result["first_name"],
+            $result["last_name"],
+            $result["birthdate"],
+        ));
         header("Location: index.php");
         exit();
     }
@@ -38,6 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         </form>
 
-        <?php require_once 'src/layout/error_list.php' ?>
+        <?php require_once 'layout/error_list.php' ?>
     </div>
 </section>
