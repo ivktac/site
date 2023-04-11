@@ -1,28 +1,11 @@
 <?php
 
+require_once 'db.php';
+
 global $conn;
 
-$sql = "SELECT news.*, users.login as login 
-FROM news
-JOIN users ON news.author_id = users.id
-WHERE visibility = 1
-";
+$news = News::getAll();
 
-if (isset($_SESSION["user"])) {
-	$user = unserialize($_SESSION["user"]);
-	if ($user->admin) {
-		$sql = str_replace("WHERE visibility = 1", "", $sql);
-	} else {
-		$sql .= " OR author_id = " . $user->id;
-	}
-}
-
-$result = mysqli_query($conn, $sql . " ORDER BY created_at DESC");
-if (!$result) {
-	die('Query failed: ' . mysqli_error($conn));
-}
-
-$news = mysqli_fetch_all($result, MYSQLI_ASSOC);
 ?>
 
 <main class="page-news">

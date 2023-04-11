@@ -1,10 +1,6 @@
 <?php
 
-if (!isSignedIn()) {
-    header("Location: index.php");
-}
-
-if (isset($_SESSION["user"])) {
+if (User::getAuthUser()) {
     session_destroy();
     header("Location: index.php");
 }

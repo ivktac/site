@@ -1,21 +1,29 @@
 <?php
 
+require_once 'db.php';
+
 global $conn;
 
-if (!isSignedIn()) {
+if (!User::isAuth()) {
     header("Location: index.php?action=login");
 }
 
-$user = unserialize($_SESSION["user"]);
+$user = User::getAuthUser();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = mysqli_escape_string($conn, $_POST["title"]);
     $content = mysqli_escape_string($conn, $_POST["content"]);
     $visibility = mysqli_escape_string($conn, $_POST["visibility"]);
 
-    $news = new News($title, $content, $visibility, $user->id);
-    
-    saveNews($conn, $news);
+    $news = new News(
+        0,
+        $title,
+        $content,
+        $visibility == 'Public' ? true : false,
+        $user->id,
+    );
+
+    $news->save();
 
     header("Location: index.php?action=news");
 }

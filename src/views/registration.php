@@ -1,10 +1,13 @@
 <?php
 
-if (isSignedIn()) {
+require_once 'db.php';
+require_once 'captcha.php';
+
+global $builder, $conn;
+
+if (User::isAuth()) {
     header("Location: index.php");
 }
-
-global $conn, $builder;
 
 $errors = [];
 
@@ -15,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $repeatPassword = $_POST["password-repeat"];
     $email = $_POST["email"];
     $captcha = $_POST["captcha"] ?? "";
-    
+
     // check if user already exists
     $result = mysqli_query($conn, "SELECT * FROM users WHERE login = '$login' OR email = '$email'");
 
@@ -33,8 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors[] = "Password should has at least 7 symbols, at least one uppercase letter, one lowercase letter and one number";
     }
 
-    if ($password != $repeatPassword)
-    {
+    if ($password != $repeatPassword) {
         $errors[] = "Passwords do not match";
     }
 
@@ -43,8 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
 
-    if (!$builder->compare($captcha, $_SESSION["captcha"]))
-    {
+    if (!$builder->compare($captcha, $_SESSION["captcha"])) {
         $errors[] = "Invalid captcha";
     }
 

@@ -1,8 +1,10 @@
 <?php
 
+require_once 'db.php';
+
 global $conn;
 
-if (!isSignedIn()) {
+if (!User::isAuth()) {
     header("Location: index.php?action=login");
 }
 
@@ -10,22 +12,20 @@ if (!isset($_GET["id"])) {
     header("Location: index.php?action=news");
 }
 
-$article_id = intval($_GET["id"]);
-$article = getNewsById($article_id);
+$article = News::getById(intval($_GET["id"]));
 
 if (!$article) {
     header("Location: index.php?action=news");
 }
 
-if ($_SESSION["user"]) {
-    $user = unserialize($_SESSION["user"]);
-    if ($user->admin || $user->id == $article["author_id"]) {
-        if (isset($_GET["action"]) && $_GET["action"] == "delete_news") {
-            deleteNews($conn, $article_id);
+$user = User::getAuthUser();
 
-            header("Location: index.php?action=news");
-        }
-    }
+if ($user->id != $article->author_id) {
+    header("Location: index.php?action=news");
+}
+
+if (isset($_GET["action"]) && $_GET["action"] == "delete_news") {
+    News::deleteById($article->id);
 }
 
 header("Location: index.php?action=news");

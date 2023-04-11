@@ -7,14 +7,10 @@
  * 
  */
 
-// TODO: Add likes/unlikes to the news
-// TODO: Add comments to the news
-// DONE: Add user profile page
-// TODO: Upload site to the server
 
 declare(strict_types=1);
 
-$path = __DIR__ . '/src';
+$path = __DIR__ . PATH_SEPARATOR . 'src';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
 session_start();
@@ -25,7 +21,6 @@ if (!file_exists("src/views/$page.php")) {
 }
 
 require_once 'config.php';
-require_once 'functions.php';
 
 require_once 'layout/header.php';
 

@@ -2,31 +2,24 @@
 global $page;
 
 $menu = [
-    'main' => 'Main',
-    'about' => 'About',
-    'news' => 'News',
-    'registration' => 'Registration',
-    'login' => 'Login',
-    'profile' => 'Profile',
-    'logout' => 'Logout'
+    'main' => ['name' => 'Main'],
+    'about' => ['name' => 'About'],
+    'news' => ['name' => 'News'],
+    'registration' => ['name' => 'Registration', 'visible' => !User::isAuth()],
+    'login' => ['name' => 'Login', 'visible' => !User::isAuth()],
+    'profile' => ['name' => 'Profile', 'visible' => User::isAuth()],
+    'logout' => ['name' => 'Logout', 'visible' => User::isAuth()]
 ];
-
-if (!isset($_SESSION["user"])) {
-    unset($menu['profile']);
-    unset($menu['logout']);
-} else {
-    unset($menu['registration']);
-    unset($menu['login']);
-}
 ?>
 
 <nav id="nav">
     <div class="menu">
         <ul>
-            <?php foreach ($menu as $action => $title) : ?>
+            <?php foreach ($menu as $action => $options) : ?>
+                <?php if (isset($options['visible']) && !$options['visible']) continue; ?>
                 <li>
                     <a href="index.php?action=<?= $action; ?>" class="link <?= $action == $page ? 'active' : ''; ?>">
-                        <?= $title; ?>
+                        <?= $options['name']; ?>
                     </a>
                 </li>
             <?php endforeach; ?>

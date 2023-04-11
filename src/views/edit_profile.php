@@ -1,12 +1,17 @@
 <?php
 
-if (!isSignedIn()) {
+require_once 'db.php';
+
+global $conn;
+
+if (!User::isAuth()) {
     header('Location: index.php');
     exit;
 }
 
-$user = unserialize($_SESSION['user']);
-$user = getUserById($user->id);
+$user = User::getAuthUser();
+
+$user = User::getById($user->id);
 
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -30,19 +35,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{7,}$/", $new_password)) {
             $errors[] = "Password should have at least 7 symbols, at least one uppercase letter, one lowercase letter, and one number";
-        } else {
-            $user->password = password_hash($new_password, PASSWORD_DEFAULT);
+            return;
         }
     }
-
 
     if (empty($errors)) {
         $user->first_name = $first_name;
         $user->last_name = $last_name;
         $user->birthdate = $birthdate;
-        $user->password = password_hash($new_password, PASSWORD_BCRYPT);
+        $user->password = $new_password;
 
-        updateUser($user);
+        $user->update();
 
         $_SESSION['user'] = serialize($user);
 

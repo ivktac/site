@@ -1,11 +1,13 @@
 <?php
 
+require_once 'db.php';
 
-if (isSignedIn()) {
+global $conn;
+
+if (User::isAuth()) {
     header("Location: index.php");
 }
 
-global $conn;
 
 $errors = [];
 
