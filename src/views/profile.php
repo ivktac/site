@@ -7,7 +7,7 @@ $user = User::getAuthUser();
 
     <div class="profile">
         <?php if ($user) : ?>
-            <p>Your Name: <b><?= $user->getFullName() ?></b></p>
+            <p>Your Full Name: <b><?= $user->getFullName() ?></b></p>
             <p>Birthdate: <b><?= $user->birthdate ?></b></p>
             <p>Login: <b><?= $user->login ?></b></p>
             <p>Email: <b><?= $user->email ?></b></p>

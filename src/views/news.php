@@ -6,6 +6,9 @@ global $conn;
 
 $news = News::getAll();
 
+$convertDateTime = function ($date) {
+	return date("d/m/Y H:i", strtotime($date));
+};
 ?>
 
 <main class="page-news">
@@ -23,9 +26,9 @@ $news = News::getAll();
 			<div class="article">
 				<h2><?= $article["title"] ?></h2>
 				<div class="article-info">
-					<p class="date"><span>Created:</span> <?= date("d/m/Y H:i", strtotime($article["created_at"])) ?></p>
+					<p class="date"><span>Created:</span> <?= $convertDateTime($article["created_at"]) ?></p>
 					<p class="author"><span>Author</span> <?= $article["login"] ?></p>
-					<p class="date"><span> Updated:</span> <?= date("d/m/Y H:i", strtotime($article["updated_at"])) ?></p>
+					<p class="date"><span> Updated:</span> <?= $convertDateTime($article["updated_at"]) ?></p>
 				</div>
 				<div class="content">
 					<?= substr($article["content"], 0, 100) ?>...

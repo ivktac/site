@@ -12,38 +12,34 @@ if (User::isAuth()) {
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    $login = $_POST["login"];
-    $password = $_POST["password"];
     $repeatPassword = $_POST["password-repeat"];
-    $email = $_POST["email"];
     $captcha = $_POST["captcha"] ?? "";
 
+    $user = User::fromStdClass((object)[
+        "id" => 0,
+        "login" => $_POST["login"],
+        "email" => $_POST["email"],
+        "password" => $_POST["password"],
+        "admin" => false,
+        "first_name" => null,
+        "last_name" => null,
+        "birthdate" => null,
+    ]);
+
     // check if user already exists
-    $result = mysqli_query($conn, "SELECT * FROM users WHERE login = '$login' OR email = '$email'");
+    $result = mysqli_query($conn, "SELECT COUNT(*) FROM users WHERE login = '$user->login' OR email = '$user->email'");
 
-    $user = mysqli_fetch_assoc($result);
+    $isExistAlready = mysqli_fetch_row($result)[0];
 
-    if ($user) {
+    if ($isExistAlready != 0) {
         $errors[] = "User with this login or email already exists";
     }
 
-    if (!preg_match("/^[a-zA-Z0-9_-]{4,}$/", $login)) {
-        $errors[] = "Login should has at least 4 symbols and only letters, numbers, underscore or dash";
-    }
+    $errors = array_merge($errors, User::validate($user));
 
-    if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{7,}$/", $password)) {
-        $errors[] = "Password should has at least 7 symbols, at least one uppercase letter, one lowercase letter and one number";
-    }
-
-    if ($password != $repeatPassword) {
+    if ($user->password != $repeatPassword) {
         $errors[] = "Passwords do not match";
     }
-
-    if (!preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/", $email)) {
-        $errors[] = "Invalid email";
-    }
-
 
     if (!$builder->compare($captcha, $_SESSION["captcha"])) {
         $errors[] = "Invalid captcha";
@@ -52,20 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($errors)) {
         unset($_SESSION["captcha"]);
 
-        $password = password_hash($password, PASSWORD_BCRYPT);
-
-        $sql = "INSERT INTO users (login, password, email) VALUES ('$login', '$password', '$email')";
-
-        $result = mysqli_query($conn, $sql);
-        if (!$result) {
-            die(mysqli_error($conn));
-        }
-
-        $db_user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM users WHERE login = '$login'"));
-
-        $user = new User($db_user["id"], $db_user["login"], $db_user["email"], $db_user["admin"]);
-
-        $_SESSION["user"] = serialize($user);
+        $user->save();
 
         header("Location: index.php?action=registration_successful");
     }

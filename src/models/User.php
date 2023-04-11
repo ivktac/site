@@ -85,6 +85,54 @@ class User
         return self::fromStdClass($user);
     }
 
+    public static function validate(User $user): array
+    {
+        $errors = [];
+
+        if (!preg_match("/^[a-zA-Z0-9]{3,}$/", $user->login)) {
+            $errors["Login"] = "Login must contain only letters and numbers and be at least 3 characters long";
+        }
+
+        if (!preg_match("/^[a-zA-Z0-9]{3,}$/", $user->password)) {
+            $errors["password"] = "Password must contain only letters and numbers and be at least 3 characters long";
+        }
+
+        if (!preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/", $user->email)) {
+            $errors["email"] = "Invalid email";
+        }
+
+        return $errors;
+    }
+
+    public static function authenticate(array $data): void
+    {
+        $user = self::fromStdClass((object)$data);
+
+        $_SESSION["user"] = serialize($user);
+    }
+
+    public function save(): void
+    {
+        global $conn;
+
+        $query = "INSERT INTO users (login, email, password) VALUES (?, ?, ?)";
+        $stmt = mysqli_prepare($conn, $query);
+
+        $this->password = password_hash($this->password, PASSWORD_BCRYPT);
+
+        mysqli_stmt_bind_param($stmt, "sss", $this->login, $this->email, $this->password);
+
+        $result = mysqli_stmt_execute($stmt);
+
+        if (!$result) {
+            die(mysqli_error($conn));
+        }
+
+        $this->id = mysqli_insert_id($conn);
+
+        $_SESSION["user"] = serialize($this);
+    }
+
     public function update(): void
     {
         global $conn;

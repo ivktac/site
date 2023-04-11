@@ -24,21 +24,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $result = mysqli_fetch_assoc($result);
 
-    if (password_verify($password, $result["password"])) {
-        $_SESSION["user"] = serialize(new User(
-            $result["id"],
-            $result["login"],
-            $result["email"],
-            $result["admin"],
-            $result["first_name"],
-            $result["last_name"],
-            $result["birthdate"],
-        ));
+    if (!password_verify($password, $result["password"])) {
+        $errors[] = "Invalid login or password";
+    }
+
+    if (empty($errors)) {
+        User::authenticate($result);
         header("Location: index.php");
         exit();
     }
-
-    $errors[] = "Invalid login or password";
 }
 
 ?>

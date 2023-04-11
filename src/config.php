@@ -13,10 +13,7 @@ require_once 'vendor/autoload.php';
 
 // load all clases from classes folder
 spl_autoload_register(function ($class_name) {
-    $filename = "src/classes/" . $class_name . ".php";
-    if (file_exists($filename)) {
-        require_once $filename;
-    }
+    require_once 'src/models/' . $class_name . '.php';
 });
 
 $dotenv = Dotenv::createImmutable(__DIR__ . "/..");
