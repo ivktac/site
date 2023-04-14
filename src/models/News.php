@@ -66,7 +66,7 @@ class News
     public static function getById(int $id): ?News
     {
         global $mysqli;
-        
+
         $result = $mysqli->query("SELECT * FROM news WHERE id = $id");
 
         if ($result->num_rows === 0) {
@@ -82,61 +82,20 @@ class News
     {
         global $mysqli;
 
-        $sql = "DELETE FROM news WHERE id = ?";
-        $stmt = mysqli_prepare($mysqli, $sql);
-
-        mysqli_stmt_bind_param($stmt, "i", $id);
-
-        $result = mysqli_stmt_execute($stmt);
-
-        if (!$result) {
-            die(mysqli_error($mysqli));
-        }
+        $mysqli->query("DELETE FROM news WHERE id = $id");
     }
 
     public function save(): void
     {
         global $mysqli;
 
-        $sql = "INSERT INTO news (title, content, visibility, author_id) VALUES (?, ?, ?, ?)";
-        $stmt = mysqli_prepare($mysqli, $sql);
-
-        mysqli_stmt_bind_param(
-            $stmt,
-            "ssii",
-            $this->title,
-            $this->content,
-            $this->visibility,
-            $this->author_id
-        );
-
-        $result = mysqli_stmt_execute($stmt);
-
-        if (!$result) {
-            die(mysqli_error($mysqli));
-        }
+        $mysqli->query("INSERT INTO news (title, content, visibility, author_id) VALUES ('{$this->title}', '{$this->content}', '{$this->visibility}', '{$this->author_id}')");
     }
 
     function update(): void
     {
         global $mysqli;
 
-        $sql = "UPDATE news SET title = ?, content = ?, visibility = ? WHERE id = ?";
-        $stmt = mysqli_prepare($mysqli, $sql);
-
-        mysqli_stmt_bind_param(
-            $stmt,
-            "ssii",
-            $this->title,
-            $this->content,
-            $this->visibility,
-            $this->id
-        );
-
-        $result = mysqli_stmt_execute($stmt);
-
-        if (!$result) {
-            die(mysqli_error($mysqli));
-        }
+        $mysqli->query("UPDATE news SET title = '{$this->title}', content = '{$this->content}', visibility = '{$this->visibility}' WHERE id = '{$this->id}'");
     }
 }
