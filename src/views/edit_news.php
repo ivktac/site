@@ -17,8 +17,9 @@ if ($user->id != $article->author_id) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $title = mysqli_escape_string($mysqli, $_POST["title"]);
-    $content = mysqli_escape_string($mysqli, $_POST["content"]);
+    // remove sql injections
+    $title = $mysqli->real_escape_string($_POST["title"]);
+    $content = $mysqli->real_escape_string($_POST["content"]);
     $visibility = intval($_POST["visibility"]);
 
     $news = new News(
@@ -33,6 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header("Location: index.php?action=news");
 }
 
+$options = [
+    "0" => ["name" => "Private", "value" => "0"],
+    "1" => ["name" => "Public", "value" => "1"],
+];
 ?>
 
 <main class="page-edit-news">
@@ -45,13 +50,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <textarea name="content" id="content" cols="30" rows="10" required><?= $article->content ?></textarea>
         <label for="visibility">Visibility</label>
         <select name="visibility" id="visibility">
-            <?php if ($article->visibility == 1) : ?>
-                <option value="1" selected>Public</option>
-                <option value="0">Private</option>
-            <?php else : ?>
-                <option value="1">Public</option>
-                <option value="0" selected>Private</option>
-            <?php endif ?>
+            <?php foreach ($options as $option) : ?>
+                <option value="<?= $option["value"] ?>" <?= $article->visibility == $option["value"] ? "selected" : "" ?>>
+                    <?= $option["name"] ?>
+                </option>
+            <?php endforeach; ?>
         </select>
         <input type="submit" value="Submit" onclick="confirm('Are you sure?')">
     </form>
