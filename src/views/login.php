@@ -2,7 +2,7 @@
 
 require_once 'db.php';
 
-global $conn;
+global $mysqli;
 
 if (User::isAuth()) {
     header("Location: index.php");
@@ -12,14 +12,14 @@ if (User::isAuth()) {
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $login = mysqli_escape_string($conn, $_POST["login"]);
-    $password =  mysqli_escape_string($conn, $_POST["password"]);
+    $login = mysqli_escape_string($mysqli, $_POST["login"]);
+    $password =  mysqli_escape_string($mysqli, $_POST["password"]);
 
     $sql = "SELECT * FROM users WHERE login = '$login'";
 
-    $result = mysqli_query($conn, $sql);
+    $result = mysqli_query($mysqli, $sql);
     if (!$result) {
-        die(mysqli_error($conn));
+        die(mysqli_error($mysqli));
     }
 
     $result = mysqli_fetch_assoc($result);

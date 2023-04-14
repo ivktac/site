@@ -2,7 +2,7 @@
 
 require_once 'db.php';
 
-global $conn;
+global $mysqli;
 
 if (!User::isAuth()) {
     header('Location: index.php');

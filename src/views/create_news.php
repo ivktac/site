@@ -2,7 +2,7 @@
 
 require_once 'db.php';
 
-global $conn;
+global $mysqli;
 
 if (!User::isAuth()) {
     header("Location: index.php?action=login");
@@ -11,9 +11,9 @@ if (!User::isAuth()) {
 $user = User::getAuthUser();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $title = mysqli_escape_string($conn, $_POST["title"]);
-    $content = mysqli_escape_string($conn, $_POST["content"]);
-    $visibility = mysqli_escape_string($conn, $_POST["visibility"]);
+    $title = mysqli_escape_string($mysqli, $_POST["title"]);
+    $content = mysqli_escape_string($mysqli, $_POST["content"]);
+    $visibility = mysqli_escape_string($mysqli, $_POST["visibility"]);
 
     $news = new News(
         0,

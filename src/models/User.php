@@ -34,10 +34,10 @@ class User
     public static function fromStdClass(stdClass $data): User
     {
         return new self(
-            (int)$data->id,
+            (int) $data->id,
             $data->login,
             $data->email,
-            (bool)$data->admin,
+            (bool) $data->admin,
             $data->first_name ?? null,
             $data->last_name ?? null,
             $data->birthdate ?? null,
@@ -61,28 +61,22 @@ class User
 
     public static function getById(int $id): ?User
     {
-        global $conn;
+        global $mysqli;
 
-        $query = "SELECT * FROM users WHERE id = ?";
-        $stmt = mysqli_prepare($conn, $query);
-
-        mysqli_stmt_bind_param($stmt, "i", $id);
-
-        $result = mysqli_stmt_execute($stmt);
+        $result = $mysqli->query("SELECT * FROM users WHERE id = $id");
 
         if (!$result) {
-            die(mysqli_error($conn));
-        }
-
-        $result = mysqli_stmt_get_result($stmt);
-
-        $user = mysqli_fetch_object($result);
-
-        if (!$user) {
+            die($mysqli->error);
             return null;
         }
 
-        return self::fromStdClass($user);
+        $data = $result->fetch_object();
+
+        if (!$data) {
+            return null;
+        }
+
+        return self::fromStdClass($data);
     }
 
     public static function validate(User $user): array
@@ -106,57 +100,32 @@ class User
 
     public static function authenticate(array $data): void
     {
-        $user = self::fromStdClass((object)$data);
+        $user = self::fromStdClass((object) $data);
 
         $_SESSION["user"] = serialize($user);
     }
 
     public function save(): void
     {
-        global $conn;
+        global $mysqli;
 
-        $query = "INSERT INTO users (login, email, password) VALUES (?, ?, ?)";
-        $stmt = mysqli_prepare($conn, $query);
+        $mysqli->query("INSERT INTO users (login, email, password) 
+            VALUES ('$this->login', '$this->email', '$this->password')");
 
-        $this->password = password_hash($this->password, PASSWORD_BCRYPT);
-
-        mysqli_stmt_bind_param($stmt, "sss", $this->login, $this->email, $this->password);
-
-        $result = mysqli_stmt_execute($stmt);
-
-        if (!$result) {
-            die(mysqli_error($conn));
-        }
-
-        $this->id = mysqli_insert_id($conn);
+        $this->id = $mysqli->insert_id;
 
         $_SESSION["user"] = serialize($this);
     }
 
     public function update(): void
     {
-        global $conn;
-
-        $query = "UPDATE users SET first_name = ?, last_name = ?, birthdate = ?, password = ? WHERE id = ?";
-        $stmt = mysqli_prepare($conn, $query);
+        global $mysqli;
 
         $this->password = password_hash($this->password, PASSWORD_BCRYPT);
 
-        mysqli_stmt_bind_param(
-            $stmt,
-            "ssssi",
-            $this->first_name,
-            $this->last_name,
-            $this->birthdate,
-            $this->password,
-            $this->id
-        );
-
-        $result = mysqli_stmt_execute($stmt);
-
-        if (!$result) {
-            die(mysqli_error($conn));
-        }
+        $mysqli->query("UPDATE users SET first_name = '$this->first_name', 
+            last_name = '$this->last_name', birthdate = '$this->birthdate', 
+            password = '$this->password' WHERE id = $this->id");
 
         $_SESSION["user"] = serialize($this);
     }

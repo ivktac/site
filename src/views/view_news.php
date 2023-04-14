@@ -2,7 +2,7 @@
 
 require_once 'db.php';
 
-global $conn;
+global $mysqli;
 
 if (!isset($_GET["id"])) {
     header("Location: index.php?action=news");

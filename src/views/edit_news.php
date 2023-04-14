@@ -2,7 +2,7 @@
 
 require_once 'db.php';
 
-global $conn;
+global $mysqli;
 
 $article = News::getById(intval($_GET["id"]));
 
@@ -17,8 +17,8 @@ if ($user->id != $article->author_id) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $title = mysqli_escape_string($conn, $_POST["title"]);
-    $content = mysqli_escape_string($conn, $_POST["content"]);
+    $title = mysqli_escape_string($mysqli, $_POST["title"]);
+    $content = mysqli_escape_string($mysqli, $_POST["content"]);
     $visibility = intval($_POST["visibility"]);
 
     $news = new News(

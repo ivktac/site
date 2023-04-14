@@ -3,7 +3,7 @@
 require_once 'db.php';
 require_once 'captcha.php';
 
-global $builder, $conn;
+global $builder, $mysqli;
 
 if (User::isAuth()) {
     header("Location: index.php");
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ]);
 
     // check if user already exists
-    $result = mysqli_query($conn, "SELECT COUNT(*) FROM users WHERE login = '$user->login' OR email = '$user->email'");
+    $result = mysqli_query($mysqli, "SELECT COUNT(*) FROM users WHERE login = '$user->login' OR email = '$user->email'");
 
     $isExistAlready = mysqli_fetch_row($result)[0];
 

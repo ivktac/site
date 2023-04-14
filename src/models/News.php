@@ -32,11 +32,11 @@ class News
     public static function fromStdClass(stdClass $data): News
     {
         return new self(
-            (int)$data->id,
+            (int) $data->id,
             $data->title,
             $data->content,
-            (bool)$data->visibility,
-            (int)$data->author_id,
+            (bool) $data->visibility,
+            (int) $data->author_id,
             $data->created_at ?? null,
             $data->updated_at ?? null
         );
@@ -44,13 +44,10 @@ class News
 
     public static function getAll(): array
     {
-        global $conn;
+        global $mysqli;
 
-        $query = "SELECT news.*, users.login as login 
-        FROM news
-        JOIN users ON news.author_id = users.id
-        WHERE visibility = 1
-        ";
+        $query = "SELECT news.*, users.login as login FROM news JOIN users ON news.author_id = users.id 
+                WHERE visibility = 1";
 
         if (User::isAuth()) {
             $user = User::getAuthUser();
@@ -61,63 +58,48 @@ class News
             }
         }
 
-        $result = mysqli_query($conn, $query);
+        $result = $mysqli->query($query);
 
-        if (!$result) {
-            die(mysqli_error($conn));
-        }
-
-        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     public static function getById(int $id): ?News
     {
-        global $conn;
+        global $mysqli;
+        
+        $result = $mysqli->query("SELECT * FROM news WHERE id = $id");
 
-        $query = "SELECT * FROM news WHERE id = ?";
-        $stmt = mysqli_prepare($conn, $query);
-
-        mysqli_stmt_bind_param($stmt, "i", $id);
-
-        $result = mysqli_stmt_execute($stmt);
-
-        if (!$result) {
-            die(mysqli_error($conn));
-        }
-
-        $result = mysqli_stmt_get_result($stmt);
-
-        $news = mysqli_fetch_object($result);
-
-        if (!$news) {
+        if ($result->num_rows === 0) {
             return null;
         }
 
-        return self::fromStdClass($news);
+        $data = $result->fetch_object();
+
+        return self::fromStdClass($data);
     }
 
     public static function deleteById(int $id): void
     {
-        global $conn;
+        global $mysqli;
 
         $sql = "DELETE FROM news WHERE id = ?";
-        $stmt = mysqli_prepare($conn, $sql);
+        $stmt = mysqli_prepare($mysqli, $sql);
 
         mysqli_stmt_bind_param($stmt, "i", $id);
 
         $result = mysqli_stmt_execute($stmt);
 
         if (!$result) {
-            die(mysqli_error($conn));
+            die(mysqli_error($mysqli));
         }
     }
 
     public function save(): void
     {
-        global $conn;
+        global $mysqli;
 
         $sql = "INSERT INTO news (title, content, visibility, author_id) VALUES (?, ?, ?, ?)";
-        $stmt = mysqli_prepare($conn, $sql);
+        $stmt = mysqli_prepare($mysqli, $sql);
 
         mysqli_stmt_bind_param(
             $stmt,
@@ -131,16 +113,16 @@ class News
         $result = mysqli_stmt_execute($stmt);
 
         if (!$result) {
-            die(mysqli_error($conn));
+            die(mysqli_error($mysqli));
         }
     }
 
     function update(): void
     {
-        global $conn;
+        global $mysqli;
 
         $sql = "UPDATE news SET title = ?, content = ?, visibility = ? WHERE id = ?";
-        $stmt = mysqli_prepare($conn, $sql);
+        $stmt = mysqli_prepare($mysqli, $sql);
 
         mysqli_stmt_bind_param(
             $stmt,
@@ -154,7 +136,7 @@ class News
         $result = mysqli_stmt_execute($stmt);
 
         if (!$result) {
-            die(mysqli_error($conn));
+            die(mysqli_error($mysqli));
         }
     }
 }
