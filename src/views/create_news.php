@@ -13,13 +13,13 @@ $user = User::getAuthUser();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = mysqli_escape_string($mysqli, $_POST["title"]);
     $content = mysqli_escape_string($mysqli, $_POST["content"]);
-    $visibility = mysqli_escape_string($mysqli, $_POST["visibility"]);
+    $visibility = $_POST["visibility"] == 1;
 
     $news = new News(
         0,
         $title,
         $content,
-        $visibility == 'Public' ? true : false,
+        $visibility,
         $user->id,
     );
 

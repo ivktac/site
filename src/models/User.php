@@ -66,7 +66,6 @@ class User
         $result = $mysqli->query("SELECT * FROM users WHERE id = $id");
 
         if (!$result) {
-            die($mysqli->error);
             return null;
         }
 
@@ -123,11 +122,29 @@ class User
     {
         global $mysqli;
 
-        $this->password = password_hash($this->password, PASSWORD_BCRYPT);
+        $query = "UPDATE users SET ";
+        $updates = [];
 
-        $mysqli->query("UPDATE users SET first_name = '$this->first_name', 
-            last_name = '$this->last_name', birthdate = '$this->birthdate', 
-            password = '$this->password' WHERE id = $this->id");
+        if (!empty($this->first_name)) {
+            $updates[] = "first_name = '$this->first_name'";
+        }
+
+        if (!empty($this->last_name)) {
+            $updates[] = "last_name = '$this->last_name'";
+        }
+
+        if (!empty($this->birthdate)) {
+            $updates[] = "birthdate = '$this->birthdate'";
+        }
+
+        if (!empty($this->password)) {
+            $updates[] = "password = '$this->password'";
+        }
+
+        $query .= implode(", ", $updates);
+        $query .= " WHERE id = $this->id";
+
+        $mysqli->query($query);
 
         $_SESSION["user"] = serialize($this);
     }

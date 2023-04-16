@@ -37,13 +37,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = "Password should have at least 7 symbols, at least one uppercase letter, one lowercase letter, and one number";
             return;
         }
+
+        $new_password = password_hash($new_password, PASSWORD_BCRYPT);
     }
 
     if (empty($errors)) {
         $user->first_name = $first_name;
         $user->last_name = $last_name;
         $user->birthdate = $birthdate;
-        $user->password = $new_password;
+        $user->password = $new_password ?? $user->password;
 
         $user->update();
 

@@ -54,7 +54,7 @@ class News
             if ($user->admin) {
                 $query = str_replace("WHERE visibility = 1", "", $query);
             } else {
-                $query .= "OR author_id = {$user->id}";
+                $query .= " OR author_id = {$user->id}";
             }
         }
 
@@ -89,7 +89,9 @@ class News
     {
         global $mysqli;
 
-        $mysqli->query("INSERT INTO news (title, content, visibility, author_id) VALUES ('{$this->title}', '{$this->content}', '{$this->visibility}', '{$this->author_id}')");
+        $visibility = $this->visibility ? 1 : 0;
+
+        $mysqli->query("INSERT INTO news (title, content, visibility, author_id) VALUES ('{$this->title}', '{$this->content}', '{$visibility}', '{$this->author_id}')");
     }
 
     function update(): void
