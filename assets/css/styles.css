@@ -28,7 +28,7 @@ header {
   padding: 50px;
   text-align: center;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -55,7 +55,7 @@ header a[class^="brand"]:hover {
 }
 
 .brand {
-  width: 50%;
+  width: fit-content;
 }
 
 .brand a {
