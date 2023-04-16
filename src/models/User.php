@@ -109,6 +109,8 @@ class User
     {
         global $mysqli;
 
+        $this->password = password_hash($this->password, PASSWORD_BCRYPT);
+
         $mysqli->query("INSERT INTO users (login, email, password) 
             VALUES ('$this->login', '$this->email', '$this->password')");
 

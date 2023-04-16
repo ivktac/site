@@ -31,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($errors)) {
         User::authenticate($result);
         header("Location: index.php");
-        exit();
     }
 }
 
