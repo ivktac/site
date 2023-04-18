@@ -139,13 +139,11 @@ class User
 
     public static function isAdmin(): bool
     {
-        if (self::isAuth()) {
-            $user = self::getAuthUser();
-
-            return $user->admin;
+        if (!self::isAuth()) {
+            return false;
         }
 
-        return false;
+        return self::getAuthUser()->admin;
     }
 
     public function auth(): void

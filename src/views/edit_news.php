@@ -4,15 +4,24 @@ require_once 'db.php';
 
 global $mysqli;
 
-if (!User::isAuth()) {
+$user = User::getAuthUser();
+
+if (is_null($user)) {
+    header("Location: index.php?action=news");
+}
+
+if (!isset($_GET["id"])) {
     header("Location: index.php?action=news");
 }
 
 $article = News::getById(intval($_GET["id"]));
 
-$user = User::getAuthUser();
 
-if (is_null($article) || $user->id != $article->author_id) {
+if (!$article) {
+    header("Location: index.php?action=news");
+}
+
+if (!$user->isAdmin() && $user->id != $article->author_id) {
     header("Location: index.php?action=news");
 }
 
@@ -33,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     header("Location: index.php?action=news");
 }
+
 
 $options = [
     "0" => ["name" => "Private", "value" => "0"],

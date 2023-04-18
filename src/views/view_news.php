@@ -10,7 +10,9 @@ if (!isset($_GET["id"])) {
 
 $article = News::getById(intval($_GET["id"]));
 
-$author = User::getById($article->author_id)->login;
+if ($article) {
+    $author = User::getById($article->author_id)->login;
+}
 
 ?>
 
