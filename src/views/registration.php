@@ -26,12 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         "birthdate" => null,
     ]);
 
-    // check if user already exists
-    $result = mysqli_query($mysqli, "SELECT COUNT(*) FROM users WHERE login = '$user->login' OR email = '$user->email'");
-
-    $isExistAlready = mysqli_fetch_row($result)[0];
-
-    if ($isExistAlready != 0) {
+    if (User::isExist($user->login, $user->email)) {
         $errors[] = "User with this login or email already exists";
     }
 

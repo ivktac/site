@@ -50,6 +50,19 @@ class User
         return isset($_SESSION["user"]);
     }
 
+    public static function isExist(string $login, string $email): bool
+    {
+        global $mysqli;
+
+        $result = $mysqli->query("SELECT COUNT(*) FROM users WHERE login = '$login' OR email = '$email'");
+
+        if (!$result) {
+            return false;
+        }
+
+        return (bool) $result->fetch_row()[0];
+    }
+
     public static function getAuthUser(): ?User
     {
         if (isset($_SESSION["user"])) {
@@ -64,6 +77,33 @@ class User
         global $mysqli;
 
         $result = $mysqli->query("SELECT * FROM users WHERE id = $id");
+
+        if (!$result) {
+            return null;
+        }
+
+        $data = $result->fetch_object();
+
+        if (!$data) {
+            return null;
+        }
+
+        return self::fromStdClass($data);
+    }
+
+    public static function getBy(array $conditions): ?User
+    {
+        global $mysqli;
+
+        $where = [];
+
+        foreach ($conditions as $key => $value) {
+            $where[] = "$key = '$value'";
+        }
+
+        $where = implode(" AND ", $where);
+
+        $result = $mysqli->query("SELECT * FROM users WHERE $where");
 
         if (!$result) {
             return null;
@@ -97,11 +137,25 @@ class User
         return $errors;
     }
 
-    public static function authenticate(array $data): void
+    public static function isAdmin(): bool
     {
-        $user = self::fromStdClass((object) $data);
+        if (self::isAuth()) {
+            $user = self::getAuthUser();
 
-        $_SESSION["user"] = serialize($user);
+            return $user->admin;
+        }
+
+        return false;
+    }
+
+    public function auth(): void
+    {
+        $_SESSION["user"] = serialize($this);
+    }
+
+    public static function logout(): void
+    {
+        unset($_SESSION["user"]);
     }
 
     public function save(): void

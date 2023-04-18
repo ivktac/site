@@ -8,30 +8,20 @@ if (User::isAuth()) {
     header("Location: index.php");
 }
 
-
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $login = mysqli_escape_string($mysqli, $_POST["login"]);
     $password =  mysqli_escape_string($mysqli, $_POST["password"]);
 
-    $sql = "SELECT * FROM users WHERE login = '$login'";
+    $user = User::getBy(["login" => $login]);
 
-    $result = mysqli_query($mysqli, $sql);
-    if (!$result) {
-        die(mysqli_error($mysqli));
-    }
-
-    $result = mysqli_fetch_assoc($result);
-
-    if (!password_verify($password, $result["password"])) {
-        $errors[] = "Invalid login or password";
-    }
-
-    if (empty($errors)) {
-        User::authenticate($result);
+    if (!is_null($user) && password_verify($password, $user->password)) {
+        $user->auth();
         header("Location: index.php");
     }
+
+    $errors[] = "Invalid login or password";
 }
 
 ?>
@@ -49,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="password" name="password" id="password" required><br>
 
             <input type="submit" value="Login">
-
         </form>
 
         <?php require_once 'layout/error_list.php' ?>
