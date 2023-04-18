@@ -41,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <select name="visibility" id="visibility">
             <option value="1">Public</option>
             <option value="0">Private</option>
+        </select>
             <input type="submit" value="Submit" onclick="confirm('Are you sure?')">
     </form>
 </main>

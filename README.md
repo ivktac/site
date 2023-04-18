@@ -12,3 +12,6 @@
 - [ ] Better desgin for error when input in form
 - [ ] Add likes/unlikes to the news
 - [ ] Add comments to the news
+- [ ] Add bool return in methods for delete/update
+- [ ] Add validation for news form
+- [ ] Add  edit/delete for all news where it's admin

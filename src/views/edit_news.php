@@ -4,15 +4,15 @@ require_once 'db.php';
 
 global $mysqli;
 
-$article = News::getById(intval($_GET["id"]));
-
 if (!User::isAuth()) {
     header("Location: index.php?action=news");
 }
 
+$article = News::getById(intval($_GET["id"]));
+
 $user = User::getAuthUser();
 
-if ($user->id != $article->author_id) {
+if (is_null($article) || $user->id != $article->author_id) {
     header("Location: index.php?action=news");
 }
 

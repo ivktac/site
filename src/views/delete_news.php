@@ -24,8 +24,6 @@ if ($user->id != $article->author_id) {
     header("Location: index.php?action=news");
 }
 
-if (isset($_GET["action"]) && $_GET["action"] == "delete_news") {
-    News::deleteById($article->id);
-}
+News::deleteById($article->id);
 
 header("Location: index.php?action=news");

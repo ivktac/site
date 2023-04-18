@@ -89,7 +89,7 @@ class News
     {
         global $mysqli;
 
-        $visibility = $this->visibility ? 1 : 0;
+        $visibility = (int)$this->visibility;
 
         $mysqli->query("INSERT INTO news (title, content, visibility, author_id) VALUES ('{$this->title}', '{$this->content}', '{$visibility}', '{$this->author_id}')");
     }
