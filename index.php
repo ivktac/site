@@ -10,6 +10,7 @@
 
 declare(strict_types=1);
 
+
 $path = __DIR__ . PATH_SEPARATOR . 'src';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 

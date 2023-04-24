@@ -1,7 +1,7 @@
 <?php
 
-$hostname = $_ENV["DB_HOSTNAME"] ?? "localhost";
-$username = $_ENV["DB_USERNAME"] ?? "test";
+$hostname = $_ENV["DB_HOST"] ?? "localhost";
+$username = $_ENV["DB_USER"] ?? "test";
 $password = $_ENV["DB_PASSWORD"] ?? "";
 $database = $_ENV["DB_NAME"] ?? "testdb";
 

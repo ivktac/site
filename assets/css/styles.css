@@ -376,3 +376,7 @@ footer a:hover {
   height: 100%;
   background-color: #eee;
 }
+
+.delete-comment-action {
+  padding: 0px;
+}

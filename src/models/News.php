@@ -100,4 +100,33 @@ class News
 
         $mysqli->query("UPDATE news SET title = '{$this->title}', content = '{$this->content}', visibility = '{$this->visibility}' WHERE id = '{$this->id}'");
     }
+
+    function getAuthor(): User
+    {
+        return User::getById($this->author_id);
+    }
+
+    function getComments(): array
+    {
+        global $mysqli;
+
+        $result = $mysqli->query("SELECT * FROM comments WHERE news_id = {$this->id}");
+
+        $comments = [];
+
+        while ($comment = $result->fetch_object()) {
+            $comments[] =  Comment::fromStdClass($comment);
+        }
+
+        return $comments;
+    }
+
+    function getCommentsCount(): int
+    {
+        global $mysqli;
+
+        $result = $mysqli->query("SELECT COUNT(*) as count FROM comments WHERE news_id = {$this->id}");
+
+        return $result->fetch_object()->count;
+    }
 }
