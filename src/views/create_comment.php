@@ -10,6 +10,10 @@ $news_id = intval($_GET["id"]);
 
 $news = News::getById($news_id);
 
+if (!$news) {
+    header("Location: index.php?action=news&id=$news_id");
+}
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $text = $mysqli->escape_string($_POST["text"]);
 
