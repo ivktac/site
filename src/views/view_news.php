@@ -48,7 +48,7 @@ $is_admin = User::isAdmin();
             <div class="news-comments">
                 <h3>Comments</h3>
                 <?php if (User::isAuth()) : ?>
-                    <a class="article-action" href="index.php?action=create_comment&id=<?= $article->id ?>">Add comment</a>
+                    <a class="article-action" href="index.php?action=create_comment&news_id=<?= $article->id ?>">Add comment</a>
                 <?php else : ?>
                     <p>You must be logged in to leave a comment.</p>
                 <?php endif ?>

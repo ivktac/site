@@ -4,14 +4,18 @@ require 'db.php';
 
 global $mysqli;
 
+if (!User::isAuth()) {
+    header("Location: index.php?action=login");
+}
+
 $user = User::getAuthUser();
 
-$news_id = intval($_GET["id"]);
+$news_id = intval($_GET["news_id"]);
 
 $news = News::getById($news_id);
 
 if (!$news) {
-    header("Location: index.php?action=news&id=$news_id");
+    header("Location: index.php?action=news");
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

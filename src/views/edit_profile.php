@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_password = $_POST['new_password'];
     $repeat_password = $_POST['repeat_password'];
 
-    if (!empty($old_password)) {
+    if (!empty($old_password) && !empty($new_password) && !empty($repeat_password)) {
         if (!password_verify($old_password, $user->password)) {
             $errors[] = 'Incorrect old password.';
             return;
